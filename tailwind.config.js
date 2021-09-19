@@ -262,7 +262,7 @@ module.exports = {
         'SFMono-Regular',
         'Menlo',
         'Monaco',
-        'Consolas', 
+        'Consolas',
         '"Liberation Mono"',
         '"Courier New"',
         'monospace',
