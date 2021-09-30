@@ -1,5 +1,5 @@
 <template>
-  <Base msg="Tell Me Jokes"/>
+  <Base />
 </template>
 
 <script>

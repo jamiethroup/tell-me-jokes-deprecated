@@ -255,7 +255,8 @@ module.exports = {
         '"Segoe UI Symbol"',
         '"Noto Color Emoji"',
       ],
-      heading: ['Oleo Script Swash Caps', 'cursive'],
+      heading: ['Raleway', 'sans-serif'],
+      body: ['Montserrat', 'sans-serif'],
       serif: ['ui-serif', 'Georgia', 'Cambria', '"Times New Roman"', 'Times', 'serif'],
       mono: [
         'ui-monospace',
@@ -876,6 +877,7 @@ module.exports = {
     extend: {
       backgroundColor: ['checked'],
       borderColor: ['checked'],
+      scale: ['active', 'hover', 'group-hover'],
     },
     fill: ['responsive'],
     filter: ['responsive'],
