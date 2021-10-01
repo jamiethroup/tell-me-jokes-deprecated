@@ -255,8 +255,8 @@ module.exports = {
         '"Segoe UI Symbol"',
         '"Noto Color Emoji"',
       ],
-      heading: ['Raleway', 'sans-serif'],
-      body: ['Montserrat', 'sans-serif'],
+      heading: ['Montserrat', 'sans-serif'],
+      body: ['Raleway', 'sans-serif'],
       serif: ['ui-serif', 'Georgia', 'Cambria', '"Times New Roman"', 'Times', 'serif'],
       mono: [
         'ui-monospace',
