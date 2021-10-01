@@ -7,19 +7,31 @@
          text-left">Tell Me Jokes</h1>
       </div>
       <div class="py-5 flex items-center justify-end">
-        <div class="inline-block">
+        <div class="inline-block pr-3 border-r border-gray-800 border-solid">
         <template v-if="darkMode === false">
           <img height="20" width="20"
           v-on:click="toggleDarkMode('dark')" src="../assets/icon--moon.svg" alt="">
         </template>
         <template v-else>
-          <img width="20"
+          <img class="ml-3" width="20"
           v-on:click="toggleDarkMode('light')" src="../assets/icon--sun.svg"
           alt="">
         </template>
           </div>
-        <div class="inline-block"><img width="20"
-         src="../assets/icon--globe.svg" alt=""></div>
+        <div class="flex items-center justify-center pl-3">
+          <img width="20"
+            class="inline-block"
+            src="../assets/icon--globe.svg"
+            alt="">
+         <select name="language"
+          class="appearance-none ml-3 px-3 bg-transparent text-sm outline-none"
+          id="language"
+          v-model="selectedLanguage">
+            <option class="float-left mr-3" v-for="item in languages" :key="item" :for="item" >
+                {{ item }}
+            </option>
+         </select>
+         </div>
       </div>
     </div>
   </div>
@@ -62,9 +74,14 @@
   </section>
   <section class="bg-gray-800">
     <div class="container mx-auto">
-      <div class="w-1/4 p-4 bg-white rounded-lg shadow-md relative -top-20">
-      <h2 class="text-xl text-left font-semibold">Filter</h2>
-        <div class="inline-block m-1" v-for="item in availableFilters" :key="item" :for="item">
+      <div class="w-1/4 p-4 bg-white rounded-lg shadow-md overflow-auto relative -top-20">
+        <h2 class="text-xl text-left font-semibold block mb-3">Filter
+          <img src="../assets/icon--filter-eye.svg"
+            alt="Filter Eye"
+            class="float-right relative top-2 w-6"
+          >
+        </h2>
+        <div class="float-left mr-3" v-for="item in availableFilters" :key="item" :for="item">
           <input
             :id="item"
             :value="item"
@@ -73,7 +90,7 @@
             type="checkbox"
             v-model="checkedFilters">
           <label class="inline-block rounded-full border border-gray-400
-          bg-gray-100 border-solid px-4 py-3 capitalize" :for="item">
+          bg-gray-100 border-solid px-4 py-2 mb-3 text-xs capitalize" :for="item">
             {{ item }}
           </label>
         </div>
@@ -108,8 +125,10 @@ export default {
       query: '',
       darkMode: false,
       availableFilters: ['nsfw', 'religious', 'political', 'racist', 'sexist', 'explicit'],
+      languages: ['English', 'German'],
       copyString: '',
       checkedFilters: [],
+      selectedLanguage: 'English',
       joke: {
       },
     };
@@ -138,6 +157,7 @@ export default {
       }
     },
     urlBuilder() {
+      // Blaclist
       let blacklist = '?blacklistFlags=';
       if (this.checkedFilters !== '') {
         this.checkedFilters.forEach((element) => {
@@ -148,7 +168,8 @@ export default {
           }
         });
       }
-      console.log(blacklist);
+      
+      // Select Language
 
       return `${this.url_base}${blacklist}`;
     },
@@ -211,7 +232,9 @@ a
   color #42b983
 
 input[type=checkbox]:checked + label
-  color #f00
-  font-style normal
+  font-style: normal;
+  background: #f13232;
+  color: white;
+  border-color: #640808;
 
 </style>
