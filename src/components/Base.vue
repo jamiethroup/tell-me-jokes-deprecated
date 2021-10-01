@@ -62,7 +62,8 @@
   </section>
   <section class="bg-gray-800">
     <div class="container mx-auto">
-      <div class="w-full p-4 bg-white rounded-lg shadow-md relative -top-20">
+      <div class="w-1/4 p-4 bg-white rounded-lg shadow-md relative -top-20">
+      <h2 class="text-xl text-left font-semibold">Filter</h2>
         <div class="inline-block m-1" v-for="item in availableFilters" :key="item" :for="item">
           <input
             :id="item"
@@ -117,40 +118,46 @@ export default {
     window.addEventListener('load', this.onWindowLoad);
   },
   methods: {
-    fetchJoke(link) {
-      if (link !== null) {
-        const url = this.urlBuilder(link);
-        console.log(url);
-        fetch(url)
+    fetchJoke() {
+      const url = this.urlBuilder();
+      console.log(url);
+      fetch(url)
+        .then((res) => res.json())
+        .then(this.setResults);
+    },
+    fetchInitialJoke(link) {
+      if (link !== undefined) {
+        fetch(link)
           .then((res) => res.json())
           .then(this.setResults);
       } else {
-        console.log('SECOND');
+        console.log(2);
         fetch(`${this.url_base}`)
           .then((res) => res.json())
           .then(this.setResults);
       }
     },
-    urlBuilder(link) {
-      const newLink = '';
-      const urlParams = new URLSearchParams(link);
-      const range = urlParams.get('idRange');
-      const blacklistFlags = urlParams.get('blacklistFlags');
-      console.log(range, blacklistFlags);
-      if (range !== null) {
-        this.newLink = `${newLink}?idRange=${range}`;
+    urlBuilder() {
+      let blacklist = '?blacklistFlags=';
+      if (this.checkedFilters !== '') {
+        this.checkedFilters.forEach((element) => {
+          if (this.checkedFilters[this.checkedFilters.length - 1] === element) {
+            blacklist = `${blacklist}${element},`;
+          } else {
+            blacklist = `${blacklist}${element},`;
+          }
+        });
       }
-      if (blacklistFlags !== null) {
-        this.newLink = `${newLink}&blacklistFlags=${blacklistFlags}`;
-      }
-      return `${this.url_base}${this.newLink}`;
+      console.log(blacklist);
+
+      return `${this.url_base}${blacklist}`;
     },
     onWindowLoad() {
       const url = window.location.search;
       if (url.indexOf('?') === -1) {
         this.fetchJoke();
       } else {
-        this.fetchJoke(url);
+        this.fetchInitialJoke(url);
       }
     },
     setResults(results) {
