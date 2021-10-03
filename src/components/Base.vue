@@ -46,9 +46,13 @@
     </div>
   </div>
 </header>
-<main class="absolute z-10 top-0 left-0 w-screen h-screen flex items-center justify-center px-10">
-  <section class="md:pt-40 md:pb-60">
+<main>
+  <section class="absolute top-0 left-0 w-full h-full flex items-center justify-center -mt-20">
     <div class="container mx-auto">
+      <div v-if="joke.error">
+          <h2 class="font-heading font-bold text-3xl mb-10">{{ joke.message }}</h2>
+          <h3 class="font-heading text-lg md:text-2xl mb-5">{{ joke.additionalInfo }}</h3>
+      </div>
       <div v-if="joke.joke">
         <div class="location-box">
           <h2 class="font-heading font-bold text-xl md:text-3xl mb-10">{{ joke.joke }}</h2>
@@ -57,7 +61,7 @@
       <div v-if="joke.setup">
         <div class="location-box">
           <h2 class="font-heading text-lg md:text-2xl mb-5">{{ joke.setup }}</h2>
-          <h2 class="font-heading font-bold text-3xl mb-10">{{ joke.delivery }}</h2>
+          <h3 class="font-heading font-bold text-3xl mb-10">{{ joke.delivery }}</h3>
         </div>
       </div>
       <div class="block md:flex items-center justify-center">
@@ -86,6 +90,68 @@
       </div>
     </div>
   </section>
+  <section class="absolute bottom-0 left-0 w-full bg-gray-800 pb-10">
+    <div class="container max-w-screen-lg mx-auto">
+      <div class="grid grid-cols-4 gap-5">
+        <div>
+          <div class="p-4 bg-white rounded-lg shadow-md overflow-auto relative -top-10">
+            <h2 class="text-xl text-left font-semibold block mb-3">Filter
+              <img src="../assets/icon--filter-eye.svg"
+                alt="Filter Eye"
+                class="float-right relative top-2 w-6"
+              >
+            </h2>
+          </div>
+        </div>
+      </div>
+      <div class="grid grid-cols-1 gap-5 p-4 bg-white rounded-lg shadow-md
+      overflow-auto">
+        <div>
+          <h2 class="text-xl text-left font-semibold block md:hidden block mb-3">Filter
+            <img src="../assets/icon--filter-eye.svg"
+              alt="Filter Eye"
+              class="float-right relative top-2 w-6"
+            >
+          </h2>
+          <div class="inline-block mr-3" v-for="item in availableFilters" :key="item" :for="item">
+            <input
+              :id="item"
+              :value="item"
+              :name="item"
+              class="-left-full fixed"
+              type="checkbox"
+              v-model="checkedFilters">
+            <label class="inline-block rounded-full border border-gray-400
+            bg-gray-100 border-solid px-4 py-2 my-2 text-xs capitalize
+            transition-allduration-300 ease-in-out" :for="item">
+              {{ item }}
+            </label>
+          </div>
+          <h2 class="text-xl text-left font-semibold block md:hidden block mb-3">Filter
+            <img src="../assets/icon--filter-eye.svg"
+              alt="Filter Eye"
+              class="float-right relative top-2 w-6"
+            >
+          </h2>
+          <div class="inline-block mr-3"
+            v-for="item in availableCategories" :key="item" :for="item">
+            <input
+              :id="item"
+              :value="item"
+              :name="item"
+              class="-left-full fixed"
+              type="checkbox"
+              v-model="checkedCategories">
+            <label class="inline-block rounded-full border border-gray-400
+            bg-gray-100 border-solid px-4 py-2 my-2 text-xs capitalize
+            transition-allduration-300 ease-in-out" :for="item">
+              {{ item }}
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 </main>
 </template>
 
@@ -94,13 +160,15 @@ export default {
   name: 'JokeApp',
   data() {
     return {
-      url_base: 'https://v2.jokeapi.dev/joke/Any',
+      url_base: 'https://v2.jokeapi.dev/joke',
       query: '',
       darkMode: false,
       availableFilters: ['nsfw', 'religious', 'political', 'racist', 'sexist', 'explicit'],
+      availableCategories: ['Programming', 'Miscellaneous', 'Dark', 'Pun', 'Spooky', 'Christmas'],
       languages: ['English', 'German'],
       copyString: '',
       checkedFilters: [],
+      checkedCategories: [],
       selectedLanguage: 'English',
       joke: {
       },
@@ -112,6 +180,7 @@ export default {
   methods: {
     fetchJoke() {
       const url = this.urlBuilder();
+      console.log(url);
       fetch(url)
         .then((res) => res.json())
         .then(this.setResults);
@@ -141,14 +210,27 @@ export default {
     urlBuilder() {
       // Blaclist
       let blacklist = 'blacklistFlags=';
+      let categories = 'Any';
       let language = 'lang=';
 
-      if (this.checkedFilters !== '') {
+      if (this.checkedFilters.length > 0) {
         this.checkedFilters.forEach((element) => {
           if (this.checkedFilters[this.checkedFilters.length - 1] === element) {
             blacklist = `${blacklist}${element}`;
           } else {
             blacklist = `${blacklist}${element},`;
+          }
+        });
+      }
+
+      if (this.checkedCategories.length > 0) {
+        categories = '';
+        console.log(this.checkedCategories.length);
+        this.checkedCategories.forEach((element) => {
+          if (this.checkedCategories[this.checkedCategories.length - 1] === element) {
+            categories = `${categories}${element}`;
+          } else {
+            categories = `${categories}${element},`;
           }
         });
       }
@@ -159,7 +241,7 @@ export default {
       } else if (this.selectedLanguage === 'German') {
         language = `${language}de`;
       }
-      return `${this.url_base}?${blacklist}&${language}`;
+      return `${this.url_base}/${categories}?${blacklist}&${language}`;
     },
     onWindowLoad() {
       const url = window.location.search;
