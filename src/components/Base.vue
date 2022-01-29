@@ -167,6 +167,7 @@ export default {
       availableCategories: ['Programming', 'Miscellaneous', 'Dark', 'Pun', 'Spooky', 'Christmas'],
       languages: ['English', 'German'],
       copyString: '',
+      notification: false,
       checkedFilters: [],
       checkedCategories: [],
       selectedLanguage: 'English',
@@ -262,7 +263,11 @@ export default {
         this.copyString = `${this.joke.joke}`;
         this.copyFunction(this.copyString);
       }
+      this.notificationAlert('Awesome!',"You've successfully copied the joke.", 2000)
     },
+    notificationAlert(title,message,time) {
+      const notificationBox = document.getElementById()
+    }
     copyFunction(joke) {
       const dummy = document.createElement('TEXTAREA');
       dummy.setAttribute('id', 'text');
