@@ -1,14 +1,16 @@
 <template>
   <Base />
+  <Filter />
 </template>
 
 <script>
 import Base from './components/Base.vue';
+import Filter from './components/Filter.vue';
 
 export default {
   name: 'App',
   components: {
-    Base,
+    Base, Filter,
   },
 };
 </script>
@@ -20,4 +22,5 @@ export default {
   -moz-osx-font-smoothing grayscale
   text-align center
   color #2c3e50
+
 </style>

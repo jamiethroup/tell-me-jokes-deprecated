@@ -55,7 +55,8 @@
       </div>
       <div v-if="joke.joke">
         <div class="location-box">
-          <h2 class="font-heading font-bold text-xl md:text-3xl mb-10">{{ joke.joke }}</h2>
+          <h2 class="font-heading text-white font-bold text-xl
+          md:text-3xl mb-10">{{ joke.joke }}</h2>
         </div>
       </div>
       <div v-if="joke.setup">
@@ -90,8 +91,63 @@
       </div>
     </div>
   </section>
-  <section class="absolute bottom-0 left-0 w-full bg-gray-800 pb-10">
-    <div class="container max-w-screen-lg mx-auto">
+  <div class="absolute bottom-6 right-6 leading-none flex flex-row">
+    <button
+      id="new_joke"
+      class="w-full bg-secondary block p-5 rounded-lg font-bold
+      text-white font-body transform transition-all duration-300 mr-4
+      shadow-md hover:shadow-lg transition-all duration-300 ease-in-out"
+      v-on:click="toggleSearch">
+      <img width="20"
+        class="inline-block"
+        src="../assets/icon--search.svg"
+        alt="">
+    </button>
+    <button
+      id="new_joke"
+      class="w-full bg-secondary block p-5 rounded-lg font-bold
+      text-white font-body transform transition-all duration-300 mr-4
+      shadow-md hover:shadow-lg transition-all duration-300 ease-in-out"
+      v-on:click="toggleFlags">
+      <img width="20"
+        class="inline-block"
+        src="../assets/icon--flag.svg"
+        alt="">
+    </button>
+    <button
+      id="new_joke"
+      class="w-full bg-secondary block p-5 rounded-lg font-bold
+      text-white font-body transform transition-all duration-300
+      shadow-md hover:shadow-lg transition-all duration-300 ease-in-out"
+      v-on:click="toggleFilter">
+      <img width="20"
+        class="inline-block"
+        src="../assets/icon--filter.svg"
+        alt="">
+    </button>
+  </div>
+<!-- START Notification Box -->
+  <section id="notification-box"
+    class="opacity-0  transition-all ease-linear duration-300
+    absolute right-10 p-8 bg-secondary max-w-md rounded-3xl">
+    <div class="grid grid-cols-12">
+      <div class="col-span-2">
+        <div class="bg-blue p-4 rounded-xl inline-block">
+          <img width="22"
+          src="../assets/icon--copied.svg"
+          alt="">
+        </div>
+      </div>
+      <div class="col-span-10 pl-2">
+        <h3 data-title class="text-lg text-white font-bold mt-3 text-left">Awesome!</h3>
+        <p data-message class="text-base text-tertiary font-semibold text-left">
+        You have successfully copied and pasted the joke</p>
+      </div>
+    </div>
+  </section>
+  <!-- END Notification Box -->
+  <section class="absolute bottom-0 left-0 w-full bg-gray-800 pb-10 hidden">
+    <div class="container max-w-screen-lg mx-auto hidden">
       <div class="grid grid-cols-4 gap-5">
         <div>
           <div class="p-4 bg-white rounded-lg shadow-md overflow-auto relative -top-10">
@@ -105,7 +161,7 @@
         </div>
       </div>
       <div class="grid grid-cols-1 gap-5 p-4 bg-white rounded-lg shadow-md
-      overflow-auto">
+      overflow-auto hidden">
         <div>
           <h2 class="text-xl text-left font-semibold block md:hidden block mb-3">Filter
             <img src="../assets/icon--filter-eye.svg"
@@ -163,11 +219,9 @@ export default {
       url_base: 'https://v2.jokeapi.dev/joke',
       query: '',
       darkMode: false,
-      availableFilters: ['nsfw', 'religious', 'political', 'racist', 'sexist', 'explicit'],
       availableCategories: ['Programming', 'Miscellaneous', 'Dark', 'Pun', 'Spooky', 'Christmas'],
       languages: ['English', 'German'],
       copyString: '',
-      notification: false,
       checkedFilters: [],
       checkedCategories: [],
       selectedLanguage: 'English',
@@ -179,6 +233,11 @@ export default {
     window.addEventListener('load', this.onWindowLoad);
   },
   methods: {
+    handleChange(event) {
+      const { value } = event.target;
+      this.value = value;
+      console.log(this.value);
+    },
     fetchJoke() {
       const url = this.urlBuilder();
       console.log(url);
@@ -263,11 +322,19 @@ export default {
         this.copyString = `${this.joke.joke}`;
         this.copyFunction(this.copyString);
       }
-      this.notificationAlert('Awesome!',"You've successfully copied the joke.", 2000)
+      this.notificationAlert(
+        'Copied!',
+        "You've successfully copied the joke. Go share it with your friends!",
+        3000,
+      );
     },
-    notificationAlert(title,message,time) {
-      const notificationBox = document.getElementById()
-    }
+    notificationAlert(title, message, time) {
+      const notificationBox = document.getElementById('notification-box');
+      notificationBox.classList.add('open');
+      notificationBox.querySelector('[data-title]').innerHTML = title;
+      notificationBox.querySelector('[data-message]').innerHTML = message;
+      setTimeout(() => notificationBox.classList.remove('open'), time);
+    },
     copyFunction(joke) {
       const dummy = document.createElement('TEXTAREA');
       dummy.setAttribute('id', 'text');
@@ -294,27 +361,5 @@ export default {
 
 <!-- Add 'scoped' attribute to limit CSS to this component only -->
 <style lang='stylus'>
-h3
-  margin 40px 0 0
-
-ul
-  list-style-type none
-  padding 0
-
-li
-  display inline-block
-  margin 0 10px
-
-a
-  color #42b983
-
-input[type=checkbox]:checked + label
-  font-style: normal;
-  background: #f13232;
-  color: white;
-  border-color: #640808;
-
-body.bg-gray-900 h1, body.bg-gray-900 h2, body.bg-gray-900 select
-  color #d1d5db!important
 
 </style>
