@@ -20,10 +20,16 @@
 	transition: 0.3s ease-in-out;
 	bottom: 120px;
   transform: translateY(0px);
+	max-width: 360px;
+	width: 100%;
 }
 
 .popup-box.open {
 	opacity: 1;
   transform: translateY(-10px);
 	transition: 0.3s ease-in-out;
+}
+
+:checked + label {
+	background: #DE3A40;
 }

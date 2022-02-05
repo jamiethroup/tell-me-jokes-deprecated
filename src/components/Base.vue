@@ -79,10 +79,9 @@
         </div>
         <div class="m-4">
           <button
-            id="new_joke"
             class="w-full bg-green-400 hover:bg-green-500 block py-5 px-10 rounded-full font-bold
             text-white font-body transform transition-all duration-300"
-            v-on:click="fetchJoke">
+            v-on:click="openFilters">
             <span>New Joke</span>
             <img width="14" class="inline-block ml-2 relative top-0.5"
             src="../assets/icon--plus.svg"
@@ -146,7 +145,7 @@
     </div>
   </section>
   <section
-    class="opacity-0 popup-box transition-all ease-linear duration-300
+    id="filter-popup" class="opacity-0 popup-box transition-all ease-linear duration-300
     absolute right-6 p-8 bg-secondary max-w-md rounded-lg shadow-md">
     <div class="grid grid-cols-12 gap-2">
       <div class="col-span-12">
@@ -156,9 +155,9 @@
           alt="">
       </div>
       <div class="col-span-12 pl-2">
-        <h3 data-title class="text-lg text-white font-semibold mt-3 text-center">
+        <h3 data-title class="text-lg text-white font-semibold mt-0 mb-2 text-center">
           Turn on Filters!</h3>
-        <p data-message class="text-base text-tertiary font-medium text-center">
+        <p data-message class="text-sm text-tertiary font-medium text-center mb-6">
         Blacklist jokes from these categories</p>
       </div>
         <div class="col-span-6" v-for="item in availableFilters" :key="item" :for="item">
@@ -170,7 +169,7 @@
             type="checkbox"
             v-model="checkedFilters">
           <label class="block w-full rounded-md
-          bg-blue border-solid px-4 py-2 text-xs
+          bg-blue border-solid px-4 py-2 text-xs capitalize font-semibold
           transition-all duration-300 ease-in-out text-white" :for="item">
             {{ item }}
           </label>
@@ -270,6 +269,9 @@ export default {
       const { value } = event.target;
       this.value = value;
       console.log(this.value);
+    },
+    toggleFilter() {
+      document.getElementById('filter-popup').classList.toggle('active');
     },
     fetchJoke() {
       const url = this.urlBuilder();
