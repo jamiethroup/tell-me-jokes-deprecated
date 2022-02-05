@@ -2,7 +2,7 @@
 <header class="relative z-20 px-4 md:px-0">
   <div class="container mx-auto mb-20">
     <div class="grid grid-cols-12 gap-5">
-      <div class="col-span-8 md:col-span-6 py-5">
+      <div  class="col-span-8 md:col-span-6 py-5">
         <h1 id="logo" class="text-gray-800 uppercase font-heading text-xl font-bold
          text-left">Tell Me Jokes</h1>
       </div>
@@ -129,7 +129,7 @@
 <!-- START Notification Box -->
   <section id="notification-box"
     class="opacity-0  transition-all ease-linear duration-300
-    absolute right-10 p-8 bg-secondary max-w-md rounded-3xl">
+    absolute right-6 p-8 bg-secondary max-w-md rounded-3xl">
     <div class="grid grid-cols-12">
       <div class="col-span-2">
         <div class="bg-blue p-4 rounded-xl inline-block">
@@ -145,9 +145,41 @@
       </div>
     </div>
   </section>
+  <section
+    class="opacity-0 popup-box transition-all ease-linear duration-300
+    absolute right-6 p-8 bg-secondary max-w-md rounded-lg shadow-md">
+    <div class="grid grid-cols-12 gap-2">
+      <div class="col-span-12">
+        <img width="40"
+          class="inline-block"
+          src="../assets/icon--filter.svg"
+          alt="">
+      </div>
+      <div class="col-span-12 pl-2">
+        <h3 data-title class="text-lg text-white font-semibold mt-3 text-center">
+          Turn on Filters!</h3>
+        <p data-message class="text-base text-tertiary font-medium text-center">
+        Blacklist jokes from these categories</p>
+      </div>
+        <div class="col-span-6" v-for="item in availableFilters" :key="item" :for="item">
+          <input
+            :id="item"
+            :value="item"
+            :name="item"
+            class="-left-full fixed"
+            type="checkbox"
+            v-model="checkedFilters">
+          <label class="block w-full rounded-md
+          bg-blue border-solid px-4 py-2 text-xs
+          transition-all duration-300 ease-in-out text-white" :for="item">
+            {{ item }}
+          </label>
+        </div>
+    </div>
+  </section>
   <!-- END Notification Box -->
-  <section class="absolute bottom-0 left-0 w-full bg-gray-800 pb-10 hidden">
-    <div class="container max-w-screen-lg mx-auto hidden">
+  <section class="absolute bottom-0 left-0 w-1/2 pb-10 ">
+    <div class="container max-w-screen-lg mx-auto ">
       <div class="grid grid-cols-4 gap-5">
         <div>
           <div class="p-4 bg-white rounded-lg shadow-md overflow-auto relative -top-10">
@@ -161,7 +193,7 @@
         </div>
       </div>
       <div class="grid grid-cols-1 gap-5 p-4 bg-white rounded-lg shadow-md
-      overflow-auto hidden">
+      overflow-auto">
         <div>
           <h2 class="text-xl text-left font-semibold block md:hidden block mb-3">Filter
             <img src="../assets/icon--filter-eye.svg"
@@ -220,6 +252,7 @@ export default {
       query: '',
       darkMode: false,
       availableCategories: ['Programming', 'Miscellaneous', 'Dark', 'Pun', 'Spooky', 'Christmas'],
+      availableFilters: ['nsfw', 'religious', 'political', 'racist', 'sexist', 'explicit'],
       languages: ['English', 'German'],
       copyString: '',
       checkedFilters: [],
