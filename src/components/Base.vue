@@ -3,7 +3,8 @@
   <div class="container mx-auto mb-20">
     <div class="grid grid-cols-12 gap-5">
       <div  class="col-span-8 md:col-span-6 py-5">
-        <h1 id="logo" class="text-gray-800 uppercase font-heading text-xl font-bold
+        <h1 id="logo" :class="darkMode == true ? 'text-black' : 'text-red'"
+        class="text-gray-800 uppercase font-heading text-xl font-bold
          text-left">Tell Me Jokes</h1>
       </div>
       <div class="col-span-4 md:col-span-6 py-5 flex items-center justify-end">
@@ -86,7 +87,7 @@
             id="new_joke"
             class="w-full bg-green-400 hover:bg-green-500 block py-5 px-10 rounded-full font-bold
             text-white font-body transform transition-all duration-300"
-            v-on:click="fetchJoke">
+            v-on:click="this.fetchJoke()">
             <span>New Joke</span>
             <img width="14" class="inline-block ml-2 relative top-0.5"
             src="../assets/icon--plus.svg"
@@ -97,11 +98,10 @@
   </section>
   <div class="absolute bottom-6 right-6 leading-none flex flex-row">
     <button
-      id="search_popup"
       class="w-full bg-secondary block p-5 rounded-lg font-bold
       text-white font-body transform transition-all duration-300 mr-4
       shadow-md hover:shadow-lg transition-all duration-300 ease-in-out"
-      v-on:click="toggleSearch">
+      v-on:click="togglePopup('search_popup')">
       <img width="20"
         class="inline-block"
         src="../assets/icon--search.svg"
@@ -255,6 +255,25 @@
         </div>
     </div>
   </section>
+  <section
+    id="search_popup" class="opacity-0 overflow-hidden popup-box transition-all
+    ease-linear duration-300 absolute right-6 p-4 bg-secondary max-w-md
+    rounded-lg shadow-md">
+    <div class="flex items-center justify-center">
+      <div class="flex-grow">
+        <input type="text"
+        placeholder="Enter your keyword.." class="w-full p-2 bg-transparent
+        border-2 border-primary focus:outline-none text-sm text-gray-300 font-heading
+        placeholder-gray-300"
+         name="search" id="search">
+      </div>
+      <div class="flex-grow py-2 px-2 bg-primary h-full border-2 border-solid border-primary
+      text-white font-semibold cursor-pointer text-sm font-heading"
+      v-on:click="fetchJoke()">
+        Search
+      </div>
+    </div>
+  </section>
   <!-- END Notification Box -->
 </main>
 </template>
@@ -285,14 +304,12 @@ export default {
     handleChange(event) {
       const { value } = event.target;
       this.value = value;
-      console.log(this.value);
     },
     togglePopup(id) {
       document.getElementById(`${id}`).classList.toggle('active');
     },
     fetchJoke() {
       const url = this.urlBuilder();
-      console.log(url);
       fetch(url)
         .then((res) => res.json())
         .then(this.setResults);
@@ -324,6 +341,7 @@ export default {
       let blacklist = 'blacklistFlags=';
       let categories = 'Any';
       let language = 'lang=';
+      let searchQuery = document.getElementById('search').value;
 
       if (this.checkedFilters.length > 0) {
         this.checkedFilters.forEach((element) => {
@@ -333,6 +351,9 @@ export default {
             blacklist = `${blacklist}${element},`;
           }
         });
+      }
+      if (searchQuery.length > 0) {
+        searchQuery = `contains=${searchQuery}`;
       }
 
       if (this.checkedCategories.length > 0) {
@@ -352,7 +373,7 @@ export default {
       } else if (this.selectedLanguage === 'German') {
         language = `${language}de`;
       }
-      return `${this.url_base}/${categories}?${blacklist}&${language}`;
+      return `${this.url_base}/${categories}?${searchQuery}&${blacklist}&${language}`;
     },
     onWindowLoad() {
       const url = window.location.search;

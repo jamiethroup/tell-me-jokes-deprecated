@@ -21,11 +21,13 @@
 	bottom: 0px;
   transform: translateY(100%);
 	width: 100%;
+	pointer-events: none;
 }
 
 .popup-box.active {
 	opacity: 1;
   transform: translateY(0px);
+	pointer-events: all;
 	transition: 0.3s ease-in-out;
 }
 
