@@ -16,20 +16,36 @@
 }
 
 .popup-box {
-	opacity: 1;
+	opacity: 0;
 	transition: 0.3s ease-in-out;
-	bottom: 120px;
-  transform: translateY(0px);
-	max-width: 360px;
+	bottom: 0px;
+  transform: translateY(100%);
 	width: 100%;
 }
 
-.popup-box.open {
+.popup-box.active {
 	opacity: 1;
-  transform: translateY(-10px);
+  transform: translateY(0px);
 	transition: 0.3s ease-in-out;
+}
+
+@media (min-width: 768px) {
+	.popup-box {
+		bottom: 120px;
+		max-width: 360px;
+		transform: translateY(0px);
+	}
+
+	.popup-box.active {
+		transform: translateY(-10px);
+	}
 }
 
 :checked + label {
 	background: #DE3A40;
+	color: white;
+}
+
+:checked + label path {
+	fill: white;
 }

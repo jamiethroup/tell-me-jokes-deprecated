@@ -50,8 +50,10 @@
   <section class="absolute top-0 left-0 w-full h-full flex items-center justify-center -mt-20">
     <div class="container mx-auto">
       <div v-if="joke.error">
-          <h2 class="font-heading font-bold text-3xl mb-10">{{ joke.message }}</h2>
-          <h3 class="font-heading text-lg md:text-2xl mb-5">{{ joke.additionalInfo }}</h3>
+          <h2 class="font-heading font-bold text-3xl mb-10
+          text-white">{{ joke.message }}</h2>
+          <h3 class="font-heading text-lg md:text-2xl mb-5
+          text-white">{{ joke.additionalInfo }}</h3>
       </div>
       <div v-if="joke.joke">
         <div class="location-box">
@@ -61,8 +63,10 @@
       </div>
       <div v-if="joke.setup">
         <div class="location-box">
-          <h2 class="font-heading text-lg md:text-2xl mb-5">{{ joke.setup }}</h2>
-          <h3 class="font-heading font-bold text-3xl mb-10">{{ joke.delivery }}</h3>
+          <h2 class="font-heading text-lg md:text-2xl mb-5
+          text-white">{{ joke.setup }}</h2>
+          <h3 class="font-heading font-bold text-3xl mb-10
+          text-white">{{ joke.delivery }}</h3>
         </div>
       </div>
       <div class="block md:flex items-center justify-center">
@@ -79,9 +83,10 @@
         </div>
         <div class="m-4">
           <button
+            id="new_joke"
             class="w-full bg-green-400 hover:bg-green-500 block py-5 px-10 rounded-full font-bold
             text-white font-body transform transition-all duration-300"
-            v-on:click="openFilters">
+            v-on:click="fetchJoke">
             <span>New Joke</span>
             <img width="14" class="inline-block ml-2 relative top-0.5"
             src="../assets/icon--plus.svg"
@@ -92,7 +97,7 @@
   </section>
   <div class="absolute bottom-6 right-6 leading-none flex flex-row">
     <button
-      id="new_joke"
+      id="search_popup"
       class="w-full bg-secondary block p-5 rounded-lg font-bold
       text-white font-body transform transition-all duration-300 mr-4
       shadow-md hover:shadow-lg transition-all duration-300 ease-in-out"
@@ -101,28 +106,32 @@
         class="inline-block"
         src="../assets/icon--search.svg"
         alt="">
+        <div class="w-4 font-medium h-4 flex items-center justify-center hidden
+        bg-red-500 text-white text-xs rounded-2xl absolute -top-1 -right-1 px-1"></div>
     </button>
     <button
-      id="new_joke"
       class="w-full bg-secondary block p-5 rounded-lg font-bold
       text-white font-body transform transition-all duration-300 mr-4
       shadow-md hover:shadow-lg transition-all duration-300 ease-in-out"
-      v-on:click="toggleFlags">
+      v-on:click="togglePopup('flag_popup')">
       <img width="20"
         class="inline-block"
         src="../assets/icon--flag.svg"
         alt="">
+        <div class="w-4 font-medium h-4 flex items-center justify-center hidden
+        bg-red-500 text-white text-xs rounded-2xl absolute -top-1 -right-1 px-1"></div>
     </button>
     <button
-      id="new_joke"
       class="w-full bg-secondary block p-5 rounded-lg font-bold
       text-white font-body transform transition-all duration-300
       shadow-md hover:shadow-lg transition-all duration-300 ease-in-out"
-      v-on:click="toggleFilter">
+      v-on:click="togglePopup('filter_popup')">
       <img width="20"
         class="inline-block"
         src="../assets/icon--filter.svg"
         alt="">
+        <div class="w-4 font-medium h-4 flex items-center justify-center hidden
+        bg-red-500 text-white text-xs rounded-2xl absolute -top-1 -right-1 px-1"></div>
     </button>
   </div>
 <!-- START Notification Box -->
@@ -145,8 +154,9 @@
     </div>
   </section>
   <section
-    id="filter-popup" class="opacity-0 popup-box transition-all ease-linear duration-300
-    absolute right-6 p-8 bg-secondary max-w-md rounded-lg shadow-md">
+    id="filter_popup" class="opacity-0 overflow-hidden popup-box transition-all
+    ease-linear duration-300 fixed md:absolute md:right-6 py-8 px-4 bg-secondary max-w-md
+    rounded-lg shadow-md">
     <div class="grid grid-cols-12 gap-2">
       <div class="col-span-12">
         <img width="40"
@@ -160,7 +170,10 @@
         <p data-message class="text-sm text-tertiary font-medium text-center mb-6">
         Blacklist jokes from these categories</p>
       </div>
-        <div class="col-span-6" v-for="item in availableFilters" :key="item" :for="item">
+    </div>
+    <div class="block">
+        <div class="inline-block mb-4 mr-2"
+        v-for="item in availableFilters" :key="item" :for="item">
           <input
             :id="item"
             :value="item"
@@ -168,77 +181,81 @@
             class="-left-full fixed"
             type="checkbox"
             v-model="checkedFilters">
-          <label class="block w-full rounded-md
-          bg-blue border-solid px-4 py-2 text-xs capitalize font-semibold
-          transition-all duration-300 ease-in-out text-white" :for="item">
-            {{ item }}
+          <label class="block w-full rounded-3xl flex items-center justify-center
+          bg-primary border-solid px-4 py-2 text-sm capitalize font-medium
+          transition-all duration-300 ease-in-out text-tertiary" :for="item">
+            <span>{{ item }}</span>
+            <span class="pl-2">
+              <svg viewBox="0 0 34 34" xmlns="http://www.w3.org/2000/svg" xml:space="preserve"
+               fill-rule="evenodd" clip-rule="evenodd" stroke-linejoin="round"
+               stroke-miterlimit="2" class="w-4">
+               <path d="M16.987 33.973C7.668 33.973 0 26.305 0 16.987 0 7.668 7.668 0
+               16.987 0c9.318 0 16.986 7.668 16.986 16.987 0 9.318-7.668 16.986-16.986
+                16.986Zm0-3.397c7.454 0 13.589-6.135 13.589-13.589 0-7.455-6.135-13.59
+                -13.589-13.59-7.455 0-13.59 6.135-13.59 13.59 0 7.454 6.135 13.589 13.59
+                13.589Zm1.698-15.288h3.398c.931 0 1.698.767 1.698 1.699 0 .931-.767
+                1.698-1.698 1.698h-3.398v3.398c0 .931-.767 1.698-1.698 1.698a1.707
+                1.707 0 0 1-1.699-1.698v-3.398h-3.397a1.707 1.707 0 0
+                1-1.699-1.698c0-.932.767-1.699 1.699-1.699h3.397v-3.397c0-.932.767-1.699
+                1.699-1.699.931 0 1.698.767 1.698 1.699v3.397Z" fill="#2d325a"
+                fill-rule="nonzero"/></svg>
+            </span>
+          </label>
+        </div>
+    </div>
+  </section>
+  <section
+    id="flag_popup" class="opacity-0 overflow-hidden popup-box transition-all
+    ease-linear duration-300 absolute right-6 py-8 px-4 bg-secondary max-w-md
+    rounded-lg shadow-md">
+    <div class="grid grid-cols-12 gap-2">
+      <div class="col-span-12">
+        <img width="40"
+          class="inline-block"
+          src="../assets/icon--flag.svg"
+          alt="">
+      </div>
+      <div class="col-span-12 pl-2">
+        <h3 data-title class="text-lg text-white font-semibold mt-0 mb-2 text-center">
+          Choose a category!</h3>
+        <p data-message class="text-sm text-tertiary font-medium text-center mb-6">
+        Please select categories below for jokes to appear from.</p>
+      </div>
+    </div>
+    <div class="block">
+        <div class="inline-block mb-4 mr-2"
+        v-for="item in availableCategories" :key="item" :for="item">
+          <input
+            :id="item"
+            :value="item"
+            :name="item"
+            class="-left-full fixed"
+            type="checkbox"
+            v-model="checkedCategories">
+          <label class="block w-full rounded-3xl flex items-center justify-center
+          bg-primary border-solid px-4 py-2 text-sm capitalize font-medium
+          transition-all duration-300 ease-in-out text-tertiary" :for="item">
+            <span>{{ item }}</span>
+            <span class="pl-2">
+              <svg viewBox="0 0 34 34" xmlns="http://www.w3.org/2000/svg" xml:space="preserve"
+               fill-rule="evenodd" clip-rule="evenodd" stroke-linejoin="round"
+               stroke-miterlimit="2" class="w-4">
+               <path d="M16.987 33.973C7.668 33.973 0 26.305 0 16.987 0 7.668 7.668 0
+               16.987 0c9.318 0 16.986 7.668 16.986 16.987 0 9.318-7.668 16.986-16.986
+                16.986Zm0-3.397c7.454 0 13.589-6.135 13.589-13.589 0-7.455-6.135-13.59
+                -13.589-13.59-7.455 0-13.59 6.135-13.59 13.59 0 7.454 6.135 13.589 13.59
+                13.589Zm1.698-15.288h3.398c.931 0 1.698.767 1.698 1.699 0 .931-.767
+                1.698-1.698 1.698h-3.398v3.398c0 .931-.767 1.698-1.698 1.698a1.707
+                1.707 0 0 1-1.699-1.698v-3.398h-3.397a1.707 1.707 0 0
+                1-1.699-1.698c0-.932.767-1.699 1.699-1.699h3.397v-3.397c0-.932.767-1.699
+                1.699-1.699.931 0 1.698.767 1.698 1.699v3.397Z" fill="#2d325a"
+                fill-rule="nonzero"/></svg>
+            </span>
           </label>
         </div>
     </div>
   </section>
   <!-- END Notification Box -->
-  <section class="absolute bottom-0 left-0 w-1/2 pb-10 ">
-    <div class="container max-w-screen-lg mx-auto ">
-      <div class="grid grid-cols-4 gap-5">
-        <div>
-          <div class="p-4 bg-white rounded-lg shadow-md overflow-auto relative -top-10">
-            <h2 class="text-xl text-left font-semibold block mb-3">Filter
-              <img src="../assets/icon--filter-eye.svg"
-                alt="Filter Eye"
-                class="float-right relative top-2 w-6"
-              >
-            </h2>
-          </div>
-        </div>
-      </div>
-      <div class="grid grid-cols-1 gap-5 p-4 bg-white rounded-lg shadow-md
-      overflow-auto">
-        <div>
-          <h2 class="text-xl text-left font-semibold block md:hidden block mb-3">Filter
-            <img src="../assets/icon--filter-eye.svg"
-              alt="Filter Eye"
-              class="float-right relative top-2 w-6"
-            >
-          </h2>
-          <div class="inline-block mr-3" v-for="item in availableFilters" :key="item" :for="item">
-            <input
-              :id="item"
-              :value="item"
-              :name="item"
-              class="-left-full fixed"
-              type="checkbox"
-              v-model="checkedFilters">
-            <label class="inline-block rounded-full border border-gray-400
-            bg-gray-100 border-solid px-4 py-2 my-2 text-xs capitalize
-            transition-allduration-300 ease-in-out" :for="item">
-              {{ item }}
-            </label>
-          </div>
-          <h2 class="text-xl text-left font-semibold block md:hidden block mb-3">Filter
-            <img src="../assets/icon--filter-eye.svg"
-              alt="Filter Eye"
-              class="float-right relative top-2 w-6"
-            >
-          </h2>
-          <div class="inline-block mr-3"
-            v-for="item in availableCategories" :key="item" :for="item">
-            <input
-              :id="item"
-              :value="item"
-              :name="item"
-              class="-left-full fixed"
-              type="checkbox"
-              v-model="checkedCategories">
-            <label class="inline-block rounded-full border border-gray-400
-            bg-gray-100 border-solid px-4 py-2 my-2 text-xs capitalize
-            transition-allduration-300 ease-in-out" :for="item">
-              {{ item }}
-            </label>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
 </main>
 </template>
 
@@ -251,7 +268,7 @@ export default {
       query: '',
       darkMode: false,
       availableCategories: ['Programming', 'Miscellaneous', 'Dark', 'Pun', 'Spooky', 'Christmas'],
-      availableFilters: ['nsfw', 'religious', 'political', 'racist', 'sexist', 'explicit'],
+      availableFilters: ['explicit', 'nsfw', 'political', 'racist', 'religious', 'sexist'],
       languages: ['English', 'German'],
       copyString: '',
       checkedFilters: [],
@@ -270,8 +287,8 @@ export default {
       this.value = value;
       console.log(this.value);
     },
-    toggleFilter() {
-      document.getElementById('filter-popup').classList.toggle('active');
+    togglePopup(id) {
+      document.getElementById(`${id}`).classList.toggle('active');
     },
     fetchJoke() {
       const url = this.urlBuilder();
@@ -320,7 +337,6 @@ export default {
 
       if (this.checkedCategories.length > 0) {
         categories = '';
-        console.log(this.checkedCategories.length);
         this.checkedCategories.forEach((element) => {
           if (this.checkedCategories[this.checkedCategories.length - 1] === element) {
             categories = `${categories}${element}`;
