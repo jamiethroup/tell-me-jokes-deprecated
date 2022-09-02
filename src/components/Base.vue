@@ -48,48 +48,55 @@
   </div>
 </header>
 <main>
+  <div class="w-20 h-20 bg-blue"></div>
+  <div class="w-20 h-20 bg-primary"></div>
+  <div class="w-20 h-20 bg-secondary"></div>
+  <div class="w-20 h-20 bg-tertiary"></div>
+  <div class="w-20 h-20 bg-quaternary"></div>
+  <div class="w-20 h-20 bg-quinary"></div>
   <section class="absolute top-0 left-0 w-full h-full flex items-center justify-center -mt-20">
     <div class="container mx-auto">
       <div v-if="joke.error">
-          <h2 class="font-heading font-bold text-3xl mb-10
-          text-white">{{ joke.message }}</h2>
-          <h3 class="font-heading text-lg md:text-2xl mb-5
-          text-white">{{ joke.additionalInfo }}</h3>
+          <h2 class="font-heading font-bold text-3xl mb-10"
+          :class="darkMode == true ? 'text-white' : 'text-blue'">{{ joke.message }}</h2>
+          <h3 class="font-heading text-lg md:text-2xl mb-5"
+          :class="darkMode == true ? 'text-white' : 'text-blue'">{{ joke.additionalInfo }}</h3>
       </div>
       <div v-if="joke.joke">
         <div class="location-box">
-          <h2 class="font-heading text-white font-bold text-xl
-          md:text-3xl mb-10">{{ joke.joke }}</h2>
+          <h2 class="font-heading font-bold text-xl
+          md:text-3xl mb-10"
+          :class="darkMode == true ? 'text-white' : 'text-blue'">{{ joke.joke }}</h2>
         </div>
       </div>
       <div v-if="joke.setup">
         <div class="location-box">
           <h2 class="font-heading text-lg md:text-2xl mb-5
-          text-white">{{ joke.setup }}</h2>
+          " :class="darkMode == true ? 'text-white' : 'text-blue'">{{ joke.setup }}</h2>
           <h3 class="font-heading font-bold text-3xl mb-10
-          text-white">{{ joke.delivery }}</h3>
+          " :class="darkMode == true ? 'text-white' : 'text-blue'" >{{ joke.delivery }}</h3>
         </div>
       </div>
       <div class="block md:flex items-center justify-center">
         <div class="m-4">
           <button
             id="copy_joke"
-            class="w-full bg-blue-300 hover:bg-blue-400 block py-5 px-10 rounded-full font-bold
+            class="w-full bg-blue hover:bg-blue-400 block py-3 px-10 rounded-full font-bold
             text-white font-body transform transition-all duration-300"
             v-on:click="copyJoke">
             <span>Copy Joke</span>
-            <img width="14" class="inline-block ml-2 relative top-0.5"
+            <img width="14" class="inline-block ml-2 relative"
             src="../assets/icon--copy.svg"
             alt=""></button>
         </div>
         <div class="m-4">
           <button
             id="new_joke"
-            class="w-full bg-green-400 hover:bg-green-500 block py-5 px-10 rounded-full font-bold
+            class="w-full bg-green-400 hover:bg-green-500 block py-3 px-10 rounded-full font-bold
             text-white font-body transform transition-all duration-300"
             v-on:click="this.fetchJoke()">
             <span>New Joke</span>
-            <img width="14" class="inline-block ml-2 relative top-0.5"
+            <img width="14" class="inline-block ml-2 relative"
             src="../assets/icon--plus.svg"
             alt=""></button>
         </div>
@@ -98,8 +105,8 @@
   </section>
   <div class="absolute bottom-6 right-6 leading-none flex flex-row">
     <button
-      class="w-full bg-secondary block p-5 rounded-lg font-bold
-      text-white font-body transform transition-all duration-300 mr-4
+      class="w-full bg-gray-800  block p-3 rounded-lg font-bold
+    text-white font-body transform transition-all duration-300 mr-4
       shadow-md hover:shadow-lg transition-all duration-300 ease-in-out"
       v-on:click="togglePopup('search_popup')">
       <img width="20"
@@ -110,7 +117,7 @@
         bg-red-500 text-white text-xs rounded-2xl absolute -top-1 -right-1 px-1"></div>
     </button>
     <button
-      class="w-full bg-secondary block p-5 rounded-lg font-bold
+      class="w-full bg-gray-800  block p-3 rounded-lg font-bold
       text-white font-body transform transition-all duration-300 mr-4
       shadow-md hover:shadow-lg transition-all duration-300 ease-in-out"
       v-on:click="togglePopup('flag_popup')">
@@ -122,7 +129,7 @@
         bg-red-500 text-white text-xs rounded-2xl absolute -top-1 -right-1 px-1"></div>
     </button>
     <button
-      class="w-full bg-secondary block p-5 rounded-lg font-bold
+      class="w-full bg-gray-800  block p-3 rounded-lg font-bold
       text-white font-body transform transition-all duration-300
       shadow-md hover:shadow-lg transition-all duration-300 ease-in-out"
       v-on:click="togglePopup('filter_popup')">
@@ -136,8 +143,8 @@
   </div>
 <!-- START Notification Box -->
   <section id="notification-box"
-    class="opacity-0  transition-all ease-linear duration-300
-    absolute right-6 p-8 bg-secondary max-w-md rounded-3xl">
+    class="settings-box opacity-0  transition-all ease-linear duration-300
+    absolute right-6 p-5 bg-gray-800  max-w-md rounded-3xl">
     <div class="grid grid-cols-12">
       <div class="col-span-2">
         <div class="bg-blue p-4 rounded-xl inline-block">
@@ -147,15 +154,15 @@
         </div>
       </div>
       <div class="col-span-10 pl-2">
-        <h3 data-title class="text-lg text-white font-bold mt-3 text-left">Awesome!</h3>
-        <p data-message class="text-base text-tertiary font-semibold text-left">
+        <h3 data-title class="text-base text-white font-bold text-left">Awesome!</h3>
+        <p data-message class="text-sm text-tertiary font-semibold text-left">
         You have successfully copied and pasted the joke</p>
       </div>
     </div>
   </section>
   <section
-    id="filter_popup" class="opacity-0 overflow-hidden popup-box transition-all
-    ease-linear duration-300 fixed md:absolute md:right-6 py-8 px-4 bg-secondary max-w-md
+    id="filter_popup" class="settings-box opacity-0 overflow-hidden popup-box transition-all
+    ease-linear duration-300 fixed md:absolute md:right-6 py-8 px-4 bg-gray-800  max-w-md
     rounded-lg shadow-md">
     <div class="grid grid-cols-12 gap-2">
       <div class="col-span-12">
@@ -205,7 +212,7 @@
     </div>
   </section>
   <section
-    id="flag_popup" class="opacity-0 overflow-hidden popup-box transition-all
+    id="flag_popup" class="settings-box opacity-0 overflow-hidden popup-box transition-all
     ease-linear duration-300 absolute right-6 py-8 px-4 bg-secondary max-w-md
     rounded-lg shadow-md">
     <div class="grid grid-cols-12 gap-2">
@@ -223,7 +230,7 @@
       </div>
     </div>
     <div class="block">
-        <div class="inline-block mb-4 mr-2"
+        <div class="inline-block mb-4 mr-2 cursor-pointer"
         v-for="item in availableCategories" :key="item" :for="item">
           <input
             :id="item"
@@ -256,7 +263,7 @@
     </div>
   </section>
   <section
-    id="search_popup" class="opacity-0 overflow-hidden popup-box transition-all
+    id="search_popup" class="settings-box opacity-0 overflow-hidden popup-box transition-all
     ease-linear duration-300 absolute right-6 p-4 bg-secondary max-w-md
     rounded-lg shadow-md">
     <div class="flex items-center justify-center">
@@ -270,7 +277,7 @@
       <div class="flex-grow py-2 px-2 bg-primary h-full border-2 border-solid border-primary
       text-white font-semibold cursor-pointer text-sm font-heading"
       v-on:click="fetchJoke()">
-        Search
+        Search Jokes
       </div>
     </div>
   </section>
@@ -306,6 +313,10 @@ export default {
       this.value = value;
     },
     togglePopup(id) {
+      const settingBoxes = document.getElementsByClassName('settings-box');
+      Array.from(settingBoxes).forEach((box) => {
+        box.classList.remove('active');
+      });
       document.getElementById(`${id}`).classList.toggle('active');
     },
     fetchJoke() {
@@ -387,6 +398,7 @@ export default {
       this.joke = results;
     },
     copyJoke() {
+      const settingBoxes = document.getElementsByClassName('settings-box');
       if (this.joke.type === 'twopart') {
         this.copyString = `${this.joke.setup}....${this.joke.delivery}`;
         this.copyFunction(this.copyString);
@@ -394,6 +406,9 @@ export default {
         this.copyString = `${this.joke.joke}`;
         this.copyFunction(this.copyString);
       }
+      Array.from(settingBoxes).forEach((box) => {
+        box.classList.remove('active');
+      });
       this.notificationAlert(
         'Copied!',
         "You've successfully copied the joke. Go share it with your friends!",

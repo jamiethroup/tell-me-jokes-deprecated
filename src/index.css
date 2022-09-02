@@ -2,10 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
+* {
+	transition: 0.3s ease;
+}
+
 #notification-box {
 	opacity: 0;
 	transition: 0.3s ease-in-out;
-	bottom: 120px;
+	bottom: 80px;
   transform: translateY(0px);
 }
 
@@ -19,21 +23,21 @@
 	opacity: 0;
 	transition: 0.3s ease-in-out;
 	bottom: 0px;
-  transform: translateY(100%);
+	transform: translateY(100%);
 	width: 100%;
 	pointer-events: none;
 }
 
 .popup-box.active {
 	opacity: 1;
-  transform: translateY(0px);
+	transform: translateY(0px);
 	pointer-events: all;
 	transition: 0.3s ease-in-out;
 }
 
 @media (min-width: 768px) {
 	.popup-box {
-		bottom: 120px;
+		bottom: 80px;
 		max-width: 360px;
 		transform: translateY(0px);
 	}
@@ -44,10 +48,14 @@
 }
 
 :checked + label {
-	background: #DE3A40;
+	@apply bg-red-600;
 	color: white;
 }
 
 :checked + label path {
 	fill: white;
+}
+
+:checked + label svg {
+	transform: rotate(45deg);
 }
