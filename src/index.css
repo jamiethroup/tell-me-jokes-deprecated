@@ -52,6 +52,22 @@
 	color: white;
 }
 
+#dimmer {
+	@apply w-screen h-screen absolute top-0 left-0 transition-all duration-300;
+	z-index: 15;
+	transition: 0.3s ease-in-out;
+	opacity: 0;
+	background: rgba(0,0,0,0.8);
+	pointer-events: none;
+}
+
+#dimmer.active {
+	@apply flex transition-all duration-300 opacity-100;
+	z-index: 15;
+	transition: 0.3s ease-in-out;
+	pointer-events: all;
+}
+
 :checked + label path {
 	fill: white;
 }

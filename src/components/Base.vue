@@ -3,14 +3,14 @@
   <div class="container mx-auto mb-20">
     <div class="grid grid-cols-12 gap-5">
       <div  class="col-span-8 md:col-span-6 py-5">
-        <h1 id="logo" :class="darkMode == true ? 'text-black' : 'text-red'"
-        class="text-gray-800 uppercase font-heading text-xl font-bold
+        <h1 id="logo" :class="darkMode == true ? 'text-white' : 'text-primary'"
+        class="uppercase font-heading text-xl font-bold
          text-left">Tell Me Jokes</h1>
       </div>
       <div class="col-span-4 md:col-span-6 py-5 flex items-center justify-end">
         <div class="inline-block pr-3 border-r border-gray-800 border-solid cursor-pointer">
         <template v-if="darkMode === false">
-          <img height="20" width="20"
+          <img class="cursor-pointer" height="20" width="20"
           v-on:click="toggleDarkMode('dark')" src="../assets/icon--moon.svg" alt="">
         </template>
         <template v-else>
@@ -34,11 +34,12 @@
         </template>
          <select name="language"
           class="appearance-none cursor-pointer pl-2 bg-transparent text-sm outline-none"
+          :class="darkMode == true ? 'text-white' : 'text-primary'"
           id="language"
           @change="changeLanguage"
           v-model="selectedLanguage">
             <option
-              class="float-left mr-3" v-for="item in languages" :key="item" :for="item" >
+              class="float-left mr-3" v-for="item in languages" :key="item" :for="item">
                 {{ item }}
             </option>
          </select>
@@ -47,15 +48,10 @@
     </div>
   </div>
 </header>
-<main>
-  <div class="w-20 h-20 bg-blue"></div>
-  <div class="w-20 h-20 bg-primary"></div>
-  <div class="w-20 h-20 bg-secondary"></div>
-  <div class="w-20 h-20 bg-tertiary"></div>
-  <div class="w-20 h-20 bg-quaternary"></div>
-  <div class="w-20 h-20 bg-quinary"></div>
-  <section class="absolute top-0 left-0 w-full h-full flex items-center justify-center -mt-20">
-    <div class="container mx-auto">
+<main class="z-10">
+  <section class="bg-gray-100 absolute top-0 left-0 w-screen h-screen flex items-center
+  justify-center z-10">
+    <div class="container px-5 md:px-0 mx-auto">
       <div v-if="joke.error">
           <h2 class="font-heading font-bold text-3xl mb-10"
           :class="darkMode == true ? 'text-white' : 'text-blue'">{{ joke.message }}</h2>
@@ -64,8 +60,7 @@
       </div>
       <div v-if="joke.joke">
         <div class="location-box">
-          <h2 class="font-heading font-bold text-xl
-          md:text-3xl mb-10"
+          <h2 class="font-heading font-bold text-xl md:text-3xl mb-10"
           :class="darkMode == true ? 'text-white' : 'text-blue'">{{ joke.joke }}</h2>
         </div>
       </div>
@@ -103,48 +98,42 @@
       </div>
     </div>
   </section>
-  <div class="absolute bottom-6 right-6 leading-none flex flex-row">
+  <div class="absolute bottom-6 right-6 leading-none flex flex-row z-10">
     <button
-      class="w-full bg-gray-800  block p-3 rounded-lg font-bold
+      class="w-full bg-secondary  block p-3 rounded-lg font-bold
     text-white font-body transform transition-all duration-300 mr-4
-      shadow-md hover:shadow-lg transition-all duration-300 ease-in-out"
+      shadow-md hover:shadow-lg ease-in-out"
       v-on:click="togglePopup('search_popup')">
       <img width="20"
         class="inline-block"
         src="../assets/icon--search.svg"
         alt="">
-        <div class="w-4 font-medium h-4 flex items-center justify-center hidden
-        bg-red-500 text-white text-xs rounded-2xl absolute -top-1 -right-1 px-1"></div>
     </button>
     <button
-      class="w-full bg-gray-800  block p-3 rounded-lg font-bold
+      class="w-full bg-secondary  block p-3 rounded-lg font-bold
       text-white font-body transform transition-all duration-300 mr-4
-      shadow-md hover:shadow-lg transition-all duration-300 ease-in-out"
+      shadow-md hover:shadow-lg ease-in-out"
       v-on:click="togglePopup('flag_popup')">
       <img width="20"
         class="inline-block"
         src="../assets/icon--flag.svg"
         alt="">
-        <div class="w-4 font-medium h-4 flex items-center justify-center hidden
-        bg-red-500 text-white text-xs rounded-2xl absolute -top-1 -right-1 px-1"></div>
     </button>
     <button
-      class="w-full bg-gray-800  block p-3 rounded-lg font-bold
+      class="w-full bg-secondary  block p-3 rounded-lg font-bold
       text-white font-body transform transition-all duration-300
-      shadow-md hover:shadow-lg transition-all duration-300 ease-in-out"
+      shadow-md hover:shadow-lg ease-in-out"
       v-on:click="togglePopup('filter_popup')">
       <img width="20"
         class="inline-block"
         src="../assets/icon--filter.svg"
         alt="">
-        <div class="w-4 font-medium h-4 flex items-center justify-center hidden
-        bg-red-500 text-white text-xs rounded-2xl absolute -top-1 -right-1 px-1"></div>
     </button>
   </div>
 <!-- START Notification Box -->
   <section id="notification-box"
     class="settings-box opacity-0  transition-all ease-linear duration-300
-    absolute right-6 p-5 bg-gray-800  max-w-md rounded-3xl">
+    absolute right-6 p-5 bg-primary max-w-md rounded-3xl z-10">
     <div class="grid grid-cols-12">
       <div class="col-span-2">
         <div class="bg-blue p-4 rounded-xl inline-block">
@@ -162,8 +151,8 @@
   </section>
   <section
     id="filter_popup" class="settings-box opacity-0 overflow-hidden popup-box transition-all
-    ease-linear duration-300 fixed md:absolute md:right-6 py-8 px-4 bg-gray-800  max-w-md
-    rounded-lg shadow-md">
+    ease-linear duration-300 fixed md:absolute md:right-6 py-8 px-4 bg-secondary max-w-md
+     rounded-tl-lg rounded-tr-lg md:rounded-lg shadow-md z-20">
     <div class="grid grid-cols-12 gap-2">
       <div class="col-span-12">
         <img width="40"
@@ -188,7 +177,7 @@
             class="-left-full fixed"
             type="checkbox"
             v-model="checkedFilters">
-          <label class="block w-full rounded-3xl flex items-center justify-center
+          <label class="w-full rounded-3xl flex items-center justify-center
           bg-primary border-solid px-4 py-2 text-sm capitalize font-medium
           transition-all duration-300 ease-in-out text-tertiary" :for="item">
             <span>{{ item }}</span>
@@ -213,8 +202,8 @@
   </section>
   <section
     id="flag_popup" class="settings-box opacity-0 overflow-hidden popup-box transition-all
-    ease-linear duration-300 absolute right-6 py-8 px-4 bg-secondary max-w-md
-    rounded-lg shadow-md">
+    ease-linear duration-300 absolute right-0 md:right-6 py-8 px-4 bg-secondary max-w-md
+    shadow-md rounded-tl-lg rounded-tr-lg md:rounded-lg z-20">
     <div class="grid grid-cols-12 gap-2">
       <div class="col-span-12">
         <img width="40"
@@ -239,7 +228,7 @@
             class="-left-full fixed"
             type="checkbox"
             v-model="checkedCategories">
-          <label class="block w-full rounded-3xl flex items-center justify-center
+          <label class="w-full rounded-3xl flex items-center justify-center
           bg-primary border-solid px-4 py-2 text-sm capitalize font-medium
           transition-all duration-300 ease-in-out text-tertiary" :for="item">
             <span>{{ item }}</span>
@@ -264,8 +253,8 @@
   </section>
   <section
     id="search_popup" class="settings-box opacity-0 overflow-hidden popup-box transition-all
-    ease-linear duration-300 absolute right-6 p-4 bg-secondary max-w-md
-    rounded-lg shadow-md">
+    ease-linear duration-300 absolute md:right-6 p-4 bg-secondary max-w-md
+    rounded-tl-lg rounded-tr-lg md:rounded-lg shadow-md z-20">
     <div class="flex items-center justify-center">
       <div class="flex-grow">
         <input type="text"
@@ -282,6 +271,7 @@
     </div>
   </section>
   <!-- END Notification Box -->
+  <div id="dimmer" v-on:click="dimmerEventHandler()"></div>
 </main>
 </template>
 
@@ -314,10 +304,20 @@ export default {
     },
     togglePopup(id) {
       const settingBoxes = document.getElementsByClassName('settings-box');
+      const dimmer = document.getElementById('dimmer');
       Array.from(settingBoxes).forEach((box) => {
         box.classList.remove('active');
       });
       document.getElementById(`${id}`).classList.toggle('active');
+      dimmer.classList.add('active');
+    },
+    dimmerEventHandler() {
+      const dimmer = document.getElementById('dimmer');
+      const settingBoxes = document.getElementsByClassName('settings-box');
+      Array.from(settingBoxes).forEach((box) => {
+        box.classList.remove('active');
+      });
+      dimmer.classList.remove('active');
     },
     fetchJoke() {
       const url = this.urlBuilder();
@@ -435,11 +435,11 @@ export default {
       if (mode === 'dark') {
         this.darkMode = true;
         document.body.classList.add('bg-gray-900');
-        document.body.classList.remove('bg-gray-300');
+        document.body.classList.remove('bg-gray-100');
       } else {
         this.darkMode = false;
         document.body.classList.remove('bg-gray-900');
-        document.body.classList.add('bg-gray-300');
+        document.body.classList.add('bg-gray-100');
       }
     },
   },
