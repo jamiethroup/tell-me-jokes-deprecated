@@ -1,4 +1,6 @@
-# Joke Generator fueled by JokeAPI.dev
+# Joke Generator fueled by JokeAPI.dev - Deprecated
+
+According to [cli.vuejs.org](https://cli.vuejs.org/), vue-cli is now in maintenance mode. I will eventually port this over to Vue3 ( July 2023 ) and actually made a solid effort at it. - <date>Jan 2023</date>
 
 
 
